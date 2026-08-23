@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="car_parts_creation" author="20moonlight01">
+        <createTable tableName="car_parts">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="steering_wheels_creation" author="20moonlight01">
+        <createTable tableName="steering_wheels">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="steering_wheels" baseColumnNames="id"
+                constraintName="fk_steering_wheels_car_parts"
+                referencedTableName="car_parts" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="wheels_creation" author="20moonlight01">
+        <createTable tableName="wheels">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="wheels" baseColumnNames="id"
+                constraintName="fk_wheels_car_parts"
+                referencedTableName="car_parts" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="interiors_creation" author="20moonlight01">
+        <createTable tableName="interiors">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="interiors" baseColumnNames="id"
+                constraintName="fk_interiors_car_parts"
+                referencedTableName="car_parts" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="transmissions_creation" author="20moonlight01">
+        <createTable tableName="transmissions">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="gear_box" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="drive" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="transmissions" baseColumnNames="id"
+                constraintName="fk_transmissions_car_parts"
+                referencedTableName="car_parts" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="stock_car_parts_creation" author="20moonlight01">
+        <createTable tableName="stock_car_parts">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="car_part_id" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reserved" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="stock_car_parts" baseColumnNames="car_part_id"
+                constraintName="fk_stock_car_parts_part"
+                referencedTableName="car_parts" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="car_models_creation" author="20moonlight01">
+        <createTable tableName="car_models">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="brand_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="standard_price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="body" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fuel" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="engine_power" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="engine_volume" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="steering_wheel_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wheels_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interior_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transmission_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="car_models" baseColumnNames="steering_wheel_id"
+                constraintName="fk_car_models_steering_wheels"
+                referencedTableName="steering_wheels" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                baseTableName="car_models" baseColumnNames="wheels_id"
+                constraintName="fk_car_models_wheels"
+                referencedTableName="wheels" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                baseTableName="car_models" baseColumnNames="interior_id"
+                constraintName="fk_car_models_interiors"
+                referencedTableName="interiors" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                baseTableName="car_models" baseColumnNames="transmission_id"
+                constraintName="fk_car_models_transmissions"
+                referencedTableName="transmissions" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="cars_creation" author="20moonlight01">
+        <createTable tableName="cars">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="model_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="color" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="steering_wheel_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wheels_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interior_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transmission_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="cars" baseColumnNames="model_id"
+                constraintName="fk_cars_car_models"
+                referencedTableName="car_models" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                baseTableName="cars" baseColumnNames="steering_wheel_id"
+                constraintName="fk_cars_steering_wheels"
+                referencedTableName="steering_wheels" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                baseTableName="cars" baseColumnNames="wheels_id"
+                constraintName="fk_cars_wheels"
+                referencedTableName="wheels" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                baseTableName="cars" baseColumnNames="interior_id"
+                constraintName="fk_cars_interiors"
+                referencedTableName="interiors" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                baseTableName="cars" baseColumnNames="transmission_id"
+                constraintName="fk_cars_transmissions"
+                referencedTableName="transmissions" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="testable_cars_creation" author="20moonlight01">
+        <createTable tableName="testable_cars">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="car_id" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="testable_cars" baseColumnNames="car_id"
+                constraintName="fk_testables_cars"
+                referencedTableName="cars" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="parts_models_creation" author="20moonlight1">
+        <createTable tableName="parts_models">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="part_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="model_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="parts_models" baseColumnNames="part_id"
+                constraintName="fk_parts_models_to_parts"
+                referencedTableName="car_parts" referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint
+                baseTableName="parts_models" baseColumnNames="model_id"
+                constraintName="fk_parts_models_to_models"
+                referencedTableName="car_models" referencedColumnNames="id"
+        />
+        <addUniqueConstraint
+                tableName="parts_models"
+                columnNames="part_id, model_id"
+                constraintName="uk_parts_models_part_model"
+        />
+    </changeSet>
+
+    <changeSet id="assembly_orders_creation" author="20moonlight01">
+        <createTable tableName="assembly_orders">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="source_order_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source_order_type" type="VARCHAR(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trace_id" type="VARCHAR(255)"/>
+            <column name="state" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="warehouse_admin_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="assembly_orders" baseColumnNames="car_id"
+                constraintName="fk_assembly_orders_cars"
+                referencedTableName="cars" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="processed_events_creation" author="20moonlight01">
+        <createTable tableName="processed_events">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="car_parts_seed" author="20moonlight01">
+        <insert tableName="car_parts">
+            <column name="id" value="11111111-1111-1111-1111-aaaaaaaaaaaa"/>
+            <column name="name" value="Sport Steering Wheel"/>
+            <column name="price" value="1500.00"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="steering_wheels">
+            <column name="id" value="11111111-1111-1111-1111-aaaaaaaaaaaa"/>
+        </insert>
+
+        <insert tableName="car_parts">
+            <column name="id" value="22222222-2222-2222-2222-bbbbbbbbbbbb"/>
+            <column name="name" value="Basic Steering Wheel"/>
+            <column name="price" value="800.00"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="steering_wheels">
+            <column name="id" value="22222222-2222-2222-2222-bbbbbbbbbbbb"/>
+        </insert>
+
+        <insert tableName="car_parts">
+            <column name="id" value="33333333-3333-3333-3333-cccccccccccc"/>
+            <column name="name" value="Sport Wheels"/>
+            <column name="price" value="2000.00"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="wheels">
+            <column name="id" value="33333333-3333-3333-3333-cccccccccccc"/>
+        </insert>
+
+        <insert tableName="car_parts">
+            <column name="id" value="44444444-4444-4444-4444-dddddddddddd"/>
+            <column name="name" value="Basic Wheels"/>
+            <column name="price" value="1200.00"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="wheels">
+            <column name="id" value="44444444-4444-4444-4444-dddddddddddd"/>
+        </insert>
+
+        <insert tableName="car_parts">
+            <column name="id" value="55555555-5555-5555-5555-eeeeeeeeeeee"/>
+            <column name="name" value="Basic Interior"/>
+            <column name="price" value="1000.00"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="interiors">
+            <column name="id" value="55555555-5555-5555-5555-eeeeeeeeeeee"/>
+        </insert>
+
+        <insert tableName="car_parts">
+            <column name="id" value="66666666-6666-6666-6666-ffffffffffff"/>
+            <column name="name" value="Leather Interior"/>
+            <column name="price" value="2500.00"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="interiors">
+            <column name="id" value="66666666-6666-6666-6666-ffffffffffff"/>
+        </insert>
+
+        <insert tableName="car_parts">
+            <column name="id" value="77777777-7777-7777-7777-111111111111"/>
+            <column name="name" value="6-Speed Manual Transmission"/>
+            <column name="price" value="1500.00"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="transmissions">
+            <column name="id" value="77777777-7777-7777-7777-111111111111"/>
+            <column name="gear_box" value="MANUAL"/>
+            <column name="drive" value="FRONT"/>
+        </insert>
+
+        <insert tableName="car_parts">
+            <column name="id" value="88888888-8888-8888-8888-222222222222"/>
+            <column name="name" value="8-Speed Automatic Transmission"/>
+            <column name="price" value="3500.00"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="transmissions">
+            <column name="id" value="88888888-8888-8888-8888-222222222222"/>
+            <column name="gear_box" value="AUTOMATIC"/>
+            <column name="drive" value="ALL"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="stock_car_parts_seed" author="20moonlight01">
+        <insert tableName="stock_car_parts">
+            <column name="id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="car_part_id" value="11111111-1111-1111-1111-aaaaaaaaaaaa"/>
+            <column name="quantity" value="10"/>
+            <column name="reserved" value="0"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="stock_car_parts">
+            <column name="id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="car_part_id" value="22222222-2222-2222-2222-bbbbbbbbbbbb"/>
+            <column name="quantity" value="10"/>
+            <column name="reserved" value="0"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="stock_car_parts">
+            <column name="id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="car_part_id" value="33333333-3333-3333-3333-cccccccccccc"/>
+            <column name="quantity" value="10"/>
+            <column name="reserved" value="0"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="stock_car_parts">
+            <column name="id" value="44444444-4444-4444-4444-444444444444"/>
+            <column name="car_part_id" value="44444444-4444-4444-4444-dddddddddddd"/>
+            <column name="quantity" value="10"/>
+            <column name="reserved" value="0"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="stock_car_parts">
+            <column name="id" value="55555555-5555-5555-5555-555555555555"/>
+            <column name="car_part_id" value="55555555-5555-5555-5555-eeeeeeeeeeee"/>
+            <column name="quantity" value="10"/>
+            <column name="reserved" value="0"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="stock_car_parts">
+            <column name="id" value="66666666-6666-6666-6666-666666666666"/>
+            <column name="car_part_id" value="66666666-6666-6666-6666-ffffffffffff"/>
+            <column name="quantity" value="10"/>
+            <column name="reserved" value="0"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="stock_car_parts">
+            <column name="id" value="99999999-7777-1111-1111-777777777777"/>
+            <column name="car_part_id" value="77777777-7777-7777-7777-111111111111"/>
+            <column name="quantity" value="10"/>
+            <column name="reserved" value="0"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+        <insert tableName="stock_car_parts">
+            <column name="id" value="99999999-8888-2222-2222-888888888888"/>
+            <column name="car_part_id" value="88888888-8888-8888-8888-222222222222"/>
+            <column name="quantity" value="10"/>
+            <column name="reserved" value="0"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="car_models_seed" author="20moonlight01">
+        <insert tableName="car_models">
+            <column name="id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+            <column name="name" value="Model S"/>
+            <column name="brand_name" value="Tesla"/>
+            <column name="standard_price" value="79999.99"/>
+            <column name="body" value="SEDAN"/>
+            <column name="fuel" value="ELECTRICITY"/>
+            <column name="engine_power" value="670.0"/>
+            <column name="engine_volume" value="0.0"/>
+            <column name="steering_wheel_id" value="11111111-1111-1111-1111-aaaaaaaaaaaa"/>
+            <column name="wheels_id" value="33333333-3333-3333-3333-cccccccccccc"/>
+            <column name="interior_id" value="66666666-6666-6666-6666-ffffffffffff"/>
+            <column name="transmission_id" value="88888888-8888-8888-8888-222222222222"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="car_models">
+            <column name="id" value="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"/>
+            <column name="name" value="X5"/>
+            <column name="brand_name" value="BMW"/>
+            <column name="standard_price" value="65000.00"/>
+            <column name="body" value="WAGON"/>
+            <column name="fuel" value="PETROL"/>
+            <column name="engine_power" value="340.0"/>
+            <column name="engine_volume" value="3.0"/>
+            <column name="steering_wheel_id" value="22222222-2222-2222-2222-bbbbbbbbbbbb"/>
+            <column name="wheels_id" value="44444444-4444-4444-4444-dddddddddddd"/>
+            <column name="interior_id" value="55555555-5555-5555-5555-eeeeeeeeeeee"/>
+            <column name="transmission_id" value="77777777-7777-7777-7777-111111111111"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="cars_seed" author="20moonlight01">
+        <insert tableName="cars">
+            <column name="id" value="cccccccc-cccc-cccc-cccc-cccccccccccc"/>
+            <column name="model_id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+            <column name="color" value="Red"/>
+            <column name="steering_wheel_id" value="11111111-1111-1111-1111-aaaaaaaaaaaa"/>
+            <column name="wheels_id" value="33333333-3333-3333-3333-cccccccccccc"/>
+            <column name="interior_id" value="66666666-6666-6666-6666-ffffffffffff"/>
+            <column name="transmission_id" value="88888888-8888-8888-8888-222222222222"/>
+            <column name="car_type" value="STOCK"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="cars">
+            <column name="id" value="dddddddd-dddd-dddd-dddd-dddddddddddd"/>
+            <column name="model_id" value="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"/>
+            <column name="color" value="Black"/>
+            <column name="steering_wheel_id" value="22222222-2222-2222-2222-bbbbbbbbbbbb"/>
+            <column name="wheels_id" value="44444444-4444-4444-4444-dddddddddddd"/>
+            <column name="interior_id" value="55555555-5555-5555-5555-eeeeeeeeeeee"/>
+            <column name="transmission_id" value="77777777-7777-7777-7777-111111111111"/>
+            <column name="car_type" value="STOCK"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="cars">
+            <column name="id" value="eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"/>
+            <column name="model_id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+            <column name="color" value="White"/>
+            <column name="steering_wheel_id" value="11111111-1111-1111-1111-aaaaaaaaaaaa"/>
+            <column name="wheels_id" value="33333333-3333-3333-3333-cccccccccccc"/>
+            <column name="interior_id" value="66666666-6666-6666-6666-ffffffffffff"/>
+            <column name="transmission_id" value="88888888-8888-8888-8888-222222222222"/>
+            <column name="car_type" value="CONFIGURED"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="parts_models_seed" author="20moonlight01">
+        <insert tableName="parts_models">
+            <column name="id" value="aaaaaaaa-1111-1111-1111-111111111111"/>
+            <column name="part_id" value="11111111-1111-1111-1111-aaaaaaaaaaaa"/>
+            <column name="model_id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="parts_models">
+            <column name="id" value="bbbbbbbb-2222-2222-2222-222222222222"/>
+            <column name="part_id" value="33333333-3333-3333-3333-cccccccccccc"/>
+            <column name="model_id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="parts_models">
+            <column name="id" value="cccccccc-3333-3333-3333-333333333333"/>
+            <column name="part_id" value="66666666-6666-6666-6666-ffffffffffff"/>
+            <column name="model_id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="parts_models">
+            <column name="id" value="dddddddd-4444-4444-4444-444444444444"/>
+            <column name="part_id" value="88888888-8888-8888-8888-222222222222"/>
+            <column name="model_id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="parts_models">
+            <column name="id" value="eeeeeeee-5555-5555-5555-555555555555"/>
+            <column name="part_id" value="22222222-2222-2222-2222-bbbbbbbbbbbb"/>
+            <column name="model_id" value="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="parts_models">
+            <column name="id" value="ffffffff-6666-6666-6666-666666666666"/>
+            <column name="part_id" value="44444444-4444-4444-4444-dddddddddddd"/>
+            <column name="model_id" value="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="parts_models">
+            <column name="id" value="11111111-7777-7777-7777-777777777777"/>
+            <column name="part_id" value="55555555-5555-5555-5555-eeeeeeeeeeee"/>
+            <column name="model_id" value="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="parts_models">
+            <column name="id" value="22222222-8888-8888-8888-888888888888"/>
+            <column name="part_id" value="77777777-7777-7777-7777-111111111111"/>
+            <column name="model_id" value="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="outbox_creation" author="20moonlight01">
+        <createTable tableName="outbox">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="aggregate_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed_at" type="TIMESTAMP"/>
+            <column name="trace_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

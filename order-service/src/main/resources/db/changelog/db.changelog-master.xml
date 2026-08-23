@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="order_states_creation" author="20moonlight01">
+        <createTable tableName="order_states">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="state_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="orders_creation" author="20moonlight01">
+        <createTable tableName="orders">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="state_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manager_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_type" type="VARCHAR(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="orders" baseColumnNames="state_id"
+                constraintName="fk_orders_states"
+                referencedTableName="order_states" referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <changeSet id="test_drive_requests_creation" author="20moonlight01">
+        <createTable tableName="test_drive_requests">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="request_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="outbox_creation" author="20moonlight01">
+        <createTable tableName="outbox">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="aggregate_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed_at" type="TIMESTAMP"/>
+            <column name="trace_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="order_states_seed" author="20moonlight01">
+        <insert tableName="order_states">
+            <column name="id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="state_type" value="PLACED"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="order_states">
+            <column name="id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="state_type" value="APPROVED"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="order_states">
+            <column name="id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="state_type" value="AWAITING_PAY"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="order_states">
+            <column name="id" value="44444444-4444-4444-4444-444444444444"/>
+            <column name="state_type" value="PAYED"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="order_states">
+            <column name="id" value="55555555-5555-5555-5555-555555555555"/>
+            <column name="state_type" value="READY"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="order_states">
+            <column name="id" value="66666666-6666-6666-6666-666666666666"/>
+            <column name="state_type" value="DELIVERING"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="order_states">
+            <column name="id" value="77777777-7777-7777-7777-777777777777"/>
+            <column name="state_type" value="FINISHED"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+
+        <insert tableName="order_states">
+            <column name="id" value="88888888-8888-8888-8888-888888888888"/>
+            <column name="state_type" value="CANCELLED"/>
+            <column name="created_at" value="2024-01-01 10:00:00"/>
+            <column name="updated_at" value="2024-01-01 10:00:00"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet id="orders_seed" author="20moonlight01">
+        <insert tableName="orders">
+            <column name="id" value="aaaaaaaa-1111-1111-1111-aaaaaaaaaaaa"/>
+            <column name="state_id" value="11111111-1111-1111-1111-111111111111"/>
+            <column name="client_id" value="ffffffff-ffff-ffff-ffff-ffffffffffff"/>
+            <column name="manager_id" value="22222222-2222-2222-2222-444444444444"/>
+            <column name="car_id" value="cccccccc-cccc-cccc-cccc-cccccccccccc"/>
+            <column name="order_type" value="STOCK"/>
+            <column name="price" value="79999.99"/>
+            <column name="created_at" value="2024-03-20 10:00:00"/>
+            <column name="updated_at" value="2024-03-20 10:00:00"/>
+        </insert>
+
+        <insert tableName="orders">
+            <column name="id" value="bbbbbbbb-2222-2222-2222-bbbbbbbbbbbb"/>
+            <column name="state_id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="client_id" value="11111111-1111-1111-1111-333333333333"/>
+            <column name="manager_id" value="33333333-3333-3333-3333-555555555555"/>
+            <column name="car_id" value="eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"/>
+            <column name="order_type" value="CONFIGURED"/>
+            <column name="price" value="50000.00"/>
+            <column name="created_at" value="2024-03-21 14:30:00"/>
+            <column name="updated_at" value="2024-03-21 14:30:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="test_drive_requests_seed" author="20moonlight01">
+        <insert tableName="test_drive_requests">
+            <column name="id" value="aaaaaaaa-1111-1111-1111-111111111111"/>
+            <column name="client_id" value="ffffffff-ffff-ffff-ffff-ffffffffffff"/>
+            <column name="car_id" value="cccccccc-cccc-cccc-cccc-cccccccccccc"/>
+            <column name="request_time" value="2024-04-01 14:00:00"/>
+            <column name="state" value="PENDING"/>
+            <column name="created_at" value="2024-03-25 10:00:00"/>
+            <column name="updated_at" value="2024-03-25 10:00:00"/>
+        </insert>
+
+        <insert tableName="test_drive_requests">
+            <column name="id" value="bbbbbbbb-2222-2222-2222-222222222222"/>
+            <column name="client_id" value="11111111-1111-1111-1111-333333333333"/>
+            <column name="car_id" value="dddddddd-dddd-dddd-dddd-dddddddddddd"/>
+            <column name="request_time" value="2024-04-02 11:30:00"/>
+            <column name="state" value="FINISHED"/>
+            <column name="created_at" value="2024-03-26 09:00:00"/>
+            <column name="updated_at" value="2024-03-27 15:00:00"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet id="update_orders_with_keycloak_ids" author="20moonlight01">
+        <update tableName="orders">
+            <column name="client_id" value="746dba5d-039f-4bd0-926f-500420beed71"/>
+            <where>client_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'</where>
+        </update>
+
+        <update tableName="orders">
+            <column name="client_id" value="47c531aa-72da-43c4-8052-9cac7f54de21"/>
+            <where>client_id = '11111111-1111-1111-1111-333333333333'</where>
+        </update>
+
+        <update tableName="orders">
+            <column name="manager_id" value="76e6db7d-e742-4d31-adad-21ad4f786953"/>
+            <where>manager_id = '22222222-2222-2222-2222-444444444444'</where>
+        </update>
+
+        <update tableName="orders">
+            <column name="manager_id" value="76e6db7d-e742-4d31-adad-21ad4f786953"/>
+            <where>manager_id = '33333333-3333-3333-3333-555555555555'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="update_test_drive_requests_with_keycloak_ids" author="20moonlight01">
+        <update tableName="test_drive_requests">
+            <column name="client_id" value="746dba5d-039f-4bd0-926f-500420beed71"/>
+            <where>client_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'</where>
+        </update>
+
+        <update tableName="test_drive_requests">
+            <column name="client_id" value="47c531aa-72da-43c4-8052-9cac7f54de21"/>
+            <where>client_id = '11111111-1111-1111-1111-333333333333'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="processed_events_creation" author="20moonlight01">
+        <createTable tableName="processed_events">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="removed" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

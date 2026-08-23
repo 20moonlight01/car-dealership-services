@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package ru.glebova.grpc;
+
+option java_multiple_files = true;
+option java_package = "ru.glebova.grpc";
+
+service CarStorageService {
+  rpc GetCarsInStock (EmptyRequest) returns (CarListResponse);
+
+  rpc GetCarInStock (CarIdRequest) returns (CarResponse);
+}
+
+message EmptyRequest {}
+
+message CarIdRequest {
+  string id = 1;
+}
+
+message CarListResponse {
+  repeated CarResponse cars = 1;
+}
+
+message CarResponse {
+  string id = 1;
+  string model_id = 2;
+  string color = 3;
+  string car_type = 4;
+  double price = 5;
+  repeated string part_ids = 6;
+}
